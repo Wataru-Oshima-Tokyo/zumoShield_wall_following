@@ -1,6 +1,7 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 # ROS imports
+import rospkg
 import rospy
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
