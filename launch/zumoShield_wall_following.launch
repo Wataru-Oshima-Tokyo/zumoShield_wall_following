@@ -1,0 +1,65 @@
+<launch>
+    
+     <rosparam 
+        command="load" 
+        file="$(find zumoShield)/config/param.yaml" 
+    />
+    <param 
+        name="robot_description" 
+        textfile="$(find zumoShield)/urdf/zumoShield.urdf" 
+    />
+    <node 
+        name="joint_state_publisher" 
+        pkg="joint_state_publisher" 
+        type="joint_state_publisher" 
+    />
+    <node 
+        name="robot_state_publisher" 
+        pkg="robot_state_publisher" 
+        type="robot_state_publisher" 
+        respawn="false"         
+        output="screen">
+    </node>
+    <node 
+        pkg="zumoShield_wall_following" 
+        name="zumoShield_wall_following" 
+        type="wall_following.py" 
+        output="screen"
+    />
+     <node 
+        pkg="rosserial_python" 
+        name="rosserialNode" 
+        type="serial_node.py" 
+        output="screen">
+        <param name="~port"         type="string"   value="/dev/ttyACM0"/>
+        <param name="~baud"         type="int"   value="115200"/>
+    </node>
+
+
+    <node
+        name="ldlidarNode"          
+        pkg="ldlidar"  
+        type="ldlidar" 
+        args="LD06"
+        output="screen">
+        <param name="serial_port"         type="string"   value="/dev/ttyS0"/>
+        <param name="lidar_frame"         type="string"   value="laser"/>  
+    </node>
+
+
+    <include file="$(find raspicam_node)/launch/camerav2_1280x960.launch"></include>
+    
+    <node name="image_transport" 
+          pkg="image_transport" 
+          type="republish" 
+          respawn="false" 
+          output="screen"
+          args="compressed in:=/raspicam_node/image raw out:=/camera/color/image_raw" />
+
+    
+    <node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom" args="0 0 0 0 0 0 map odom"/>
+    <node pkg="tf2_ros" type="static_transform_publisher" name="odom_to_base_link" args="0 0 0 0 0 0  odom base_link"/>
+    <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_laser" args="0 0 0 0 0 0  base_link laser"/>
+    <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_imu" args="0 0 0 0 0 0  base_link imu_link"/>
+
+</launch>
