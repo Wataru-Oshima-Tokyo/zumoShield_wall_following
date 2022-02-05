@@ -60,7 +60,6 @@ class WALL_FOLLOW():
 
             if self.RUN is 1:
 
-                print("run")
                 time_duration = rospy.get_time() - last_clb_time_
                 if time_duration < self.TIMEOUT:
                     msg = self.following_wall()
