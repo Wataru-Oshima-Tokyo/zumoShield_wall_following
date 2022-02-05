@@ -62,6 +62,7 @@ class WALL_FOLLOW():
 
                 time_duration = rospy.get_time() - last_clb_time_
                 if time_duration < self.TIMEOUT:
+                    print("here")
                     msg = self.following_wall()
 
                 self.pub_.publish(msg)
