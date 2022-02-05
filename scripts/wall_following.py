@@ -53,14 +53,14 @@ class WALL_FOLLOW():
 
         rate = rospy.Rate(self.hz)
 
-        last_clb_time_ = rospy.get_time()
+        self.last_clb_time_ = rospy.get_time()
 
         while not rospy.is_shutdown():
             msg = Twist()
 
             if self.RUN is 1:
 
-                time_duration = rospy.get_time() - last_clb_time_
+                time_duration = rospy.get_time() - self.last_clb_time_
                 if time_duration < self.TIMEOUT:
                     print("here")
                     msg = self.following_wall()
