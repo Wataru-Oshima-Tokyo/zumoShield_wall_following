@@ -108,9 +108,9 @@ class WALL_FOLLOW():
         for i in range(min_index, max_index):
             if msg.ranges[i] < msg.ranges[min_index] and msg.ranges[i] > 0.01:
                 min_index = i
-        self.angle_min = (min_index-size/2)*msg.angle_increment
+        self.angle_min = (min_index-size//2)*msg.angle_increment
         dist_min = msg.ranges[min_index]
-        self.dist_front = msg.ranges[size/2]
+        self.dist_front = msg.ranges[size//2]
         self.diff_e = min((dist_min - self.wall_dist) - self.e, 100)
         self.e = min(dist_min - self.wall_dist, 100)
 
