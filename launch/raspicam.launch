@@ -1,0 +1,13 @@
+<launch>
+    
+    <include file="$(find raspicam_node)/launch/camerav2_410x308_30fps.launch"></include>
+    
+    <node name="image_transport" 
+          pkg="image_transport" 
+          type="republish" 
+          respawn="false" 
+          output="screen"
+          args="compressed in:=/raspicam_node/image raw out:=/camera/color/image_raw" />
+
+</launch>
+

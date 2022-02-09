@@ -62,10 +62,38 @@ void image_callback(const sensor_msgs::ImageConstPtr& msg){
    }
    int low_c[3] = {17, 123, 121};
    int high_c[3] ={37, 143, 201};
-   cv::Mat frame = cv_ptr->image, frame_HSV, frame_threshold, mask;
+   cv::Mat frame = cv_ptr->image, frame_HSV, frame_threshold, mask,resized;
+   int fheight = frame.cols, fwidth = frame.rows;
 
+   //change the image from BGR to HSV
    cv::cvtColor(frame, frame_HSV, cv::COLOR_BGR2HSV);
+   //mask the image in yellow
    cv::inRange(frame_HSV, cv::Scalar(low_c[0],low_c[1],low_c[1]), cv::Scalar(high_c[0],high_c[1],high_c[2]),mask);
+   //resize the image
+  //  cv::resize(mask, resized, cv::Size(), fwidth/3, fheight/3);
+   int search_top = fheight/4*3; 
+   int search_bot = search_top+20;//focus on just the front of cam <- need to know only 20 rows
+  //  mask[0:search_top, 0:w] =0;
+  //  mask[search_bot:fheight, 0:w] = 0;
+  //  for(int i=1; i<mask.rows-1; i++){
+  //    for(int j=1; j<mask.cols-1; j++){
+  //      cv::Vec3b &color = mask.at<cv::Vec3b>(cv::Point(j,i));
+  //      if(j< search_top || (j>search_bot && j<fheight)){
+  //         color.val[0] =0;
+  //         color.val[1] =0;
+  //         color.val[2] =0;
+  //      }
+  //    }
+  //  }
+
+   cv::Moments M = cv::moments(mask); // get the center of gravity
+   if (M.m00 >0){
+			int cx = int(M.m10/M.m00); //重心のx座標
+			int cy = int(M.m01/M.m00); //重心のy座標
+      
+      cv::circle(frame, cv::Point(cx,cy), 5, cv::Scalar(0, 0, 255));
+   }
+   
    cv::imshow("original", frame);
    cv::imshow("Masked", mask);
    cv::waitKey(3);
