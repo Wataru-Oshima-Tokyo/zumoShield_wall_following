@@ -50,42 +50,37 @@ void control_Callback(const geometry_msgs::Twist& cmd_vel_sub)
   if(ForwardSpeed !=0 && AngularSpeed ==0){
 //    moveForward
     leftSpeed = ForwardSpeed;
-    rightSpeed = ForwardSpeed*0.8;
+    rightSpeed = ForwardSpeed;
   }else if (ForwardSpeed !=0 && AngularSpeed !=0){
-    if(ForwardSpeed>0){
      if(AngularSpeed >0){
-      //slightly turning to right
-      leftSpeed = ForwardSpeed*0.5;
-      rightSpeed = ForwardSpeed*1.2;
+      //slightly turning to left
+      leftSpeed = ForwardSpeed*0.7;
+      rightSpeed = ForwardSpeed;
      }else{
-      //slightly turning to left
-      leftSpeed = ForwardSpeed;
-      rightSpeed = ForwardSpeed*0.5;
-     }
-    }else{
-     if(AngularSpeed <0){
       //slightly turning to right
-      leftSpeed = ForwardSpeed*0.5;
-      rightSpeed = ForwardSpeed*1.2;
-    }else{
-      //slightly turning to left
       leftSpeed = ForwardSpeed;
-      rightSpeed = ForwardSpeed*0.5;
-    }
-
-    }
+      rightSpeed = ForwardSpeed*0.7;
+     }
+     if(ForwardSpeed <0){
+      int16_t temp = leftSpeed;
+      leftSpeed = rightSpeed;
+      rightSpeed = temp;
+     }
   }else if(ForwardSpeed ==0 && AngularSpeed !=0){
      if(AngularSpeed >0){
-      //rotate to right
-      leftSpeed = AngularSpeed;
-      rightSpeed = AngularSpeed*-1;
+      //rotate to left
+      leftSpeed = AngularSpeed*-1;
+      rightSpeed = AngularSpeed;
     }else{
-      //slightly turning to left
-      leftSpeed = AngularSpeed;
-      rightSpeed = AngularSpeed*-1;
+      //rotate to right
+      leftSpeed = AngularSpeed*-1;
+      rightSpeed = AngularSpeed;
     }
+  }else{
+    leftSpeed =0;
+    rightSpeed =0;
   }
-     motors.setSpeeds(leftSpeed, rightSpeed);
+     motors.setSpeeds(leftSpeed, rightSpeed*0.9);
      delay(200);
      motors.setSpeeds(0, 0);    
 }
