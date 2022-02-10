@@ -40,7 +40,23 @@ void image_callback(const sensor_msgs::ImageConstPtr& msg){
      ROS_ERROR("cv_bridge exception: %s", e.what());
      return;
    }
-   cv::Mat frame = cv_ptr->image; 
+   
+   int low_c[3] = {17, 123, 121};
+   int high_c[3] ={37, 143, 201};
+   cv::Mat frame = cv_ptr->image, frame_HSV, mask; 
+   cv::cvtColor(frame, frame_HSV, cv::COLOR_BGR2HSV);
+   int fheight = frame.cols, fwidth = frame.rows;
+      //mask the image in yellow
+   cv::inRange(frame_HSV, cv::Scalar(low_c[0],low_c[1],low_c[1]), cv::Scalar(high_c[0],high_c[1],high_c[2]),mask);
+   
+   cv::Moments M = cv::moments(mask); // get the center of gravity
+   if (M.m00 >0){
+                        int cx = int(M.m10/M.m00); //重心のx座標
+                        int cy = int(M.m01/M.m00); //重心のy座標
+
+      cv::circle(frame, cv::Point(cx,cy), 5, cv::Scalar(0, 0, 255));
+   }
+
    cv::imshow("original", frame);
    cv::waitKey(3);
 

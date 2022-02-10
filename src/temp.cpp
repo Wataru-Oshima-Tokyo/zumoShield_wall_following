@@ -95,7 +95,7 @@ void image_callback(const sensor_msgs::ImageConstPtr& msg){
    }
    
    cv::imshow("original", frame);
-   cv::imshow("Masked", mask);
+   //cv::imshow("Masked", mask);
    cv::waitKey(3);
 
 }
