@@ -40,7 +40,7 @@ void image_callback(const sensor_msgs::ImageConstPtr& msg){
      ROS_ERROR("cv_bridge exception: %s", e.what());
      return;
    }
-   
+   cv::Mat frame = cv_ptr->image; 
    cv::imshow("original", frame);
    cv::waitKey(3);
 

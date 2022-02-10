@@ -15,12 +15,9 @@ project(zumoShield_wall_following)
     image_transport
   )
 
-<<<<<<< HEAD
-  find_package(OpenCV  REQUIRED)
-=======
-  find_package(OpenCV 3 REQUIRED)
-  #find_package(OpenCV 4 REQUIRED)
->>>>>>> acffc9292dc8d37d3b57d2d4550065a879144d73
+  #find_package(OpenCV 3 REQUIRED)
+  find_package(OpenCV 4 REQUIRED)
+
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
